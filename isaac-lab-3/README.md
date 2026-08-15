@@ -6,9 +6,9 @@ remotely — nothing here needs Isaac Lab installed locally.
 
 ## What's here
 
-One folder per example:
+One folder per example, plus the project files:
 
-| Folder | What it contains |
+| Path | What it contains |
 |---|---|
 | `sandbox/` | `demo.py` boots a naked Isaac Lab session and idles the event loop, so the streamed GUI is fully yours: build a scene, drop in assets, press Play. Nothing is scripted and nothing is recorded. |
 | `cartpole/` | Cartpole basics. `demo.py` is a plain script (not a scenario) that drives a cartpole under a sine effort, mainly to exercise the livestream. `scenarios.py` holds `cartpole_balance`, a fast smoke check that the state stays finite, and `cartpole_drive`, a 6-case parameter sweep (3 efforts × 2 frequencies) bounding the swing. |
@@ -28,8 +28,11 @@ the commands below with `uv run`. You'll need to be signed in to Antioch
 
 ## Running things
 
+Interactive runs stream the simulator GUI by default; `antioch machine status`
+prints the stream URL.
+
 **The plain scripts** — output and exit status are the whole story, nothing is
-recorded. They stream a live viewport by default:
+recorded:
 
 ```bash
 antioch run cartpole/demo.py                   # 30s run with livestream

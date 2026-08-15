@@ -1,14 +1,14 @@
 # Isaac Sim 6.0.1 examples
 
-A small Antioch project showing the three ways to run Isaac Sim code on a
-remote GPU machine: a plain script, recorded scenarios, and suites. All
-simulation runs remotely — nothing here needs Isaac Sim installed locally.
+A small Antioch project showing Isaac Sim 6.0.1 code running on a remote GPU
+machine: plain scripts, recorded scenarios, and suites. All simulation runs
+remotely — nothing here needs Isaac Sim installed locally.
 
 ## What's here
 
-One folder per example:
+One folder per example, plus the project files:
 
-| Folder | What it contains |
+| Path | What it contains |
 |---|---|
 | `sandbox/` | `demo.py` boots a naked Isaac Sim session and idles the event loop, so the streamed GUI is fully yours: build a scene, drop in assets, press Play. Nothing is scripted and nothing is recorded. |
 | `cubes/` | Cube physics. `demo.py` is a plain script (not a scenario) that rains cubes onto a ground plane, mainly to exercise the livestream. `scenarios.py` holds `falling_cube`, a fast smoke check that a dropped cube settles, and `cube_bounce`, a 6-case parameter sweep (3 drop heights × 2 restitutions) measuring rebound. |
@@ -29,8 +29,11 @@ the commands below with `uv run`. You'll need to be signed in to Antioch
 
 ## Running things
 
-**The plain script** — output and exit status are the whole story, nothing is
-recorded. Streams a live viewport by default:
+Interactive runs stream the simulator GUI by default; `antioch machine status`
+prints the stream URL.
+
+**The plain scripts** — output and exit status are the whole story, nothing is
+recorded:
 
 ```bash
 antioch run cubes/demo.py                   # 30s run with livestream
@@ -69,18 +72,20 @@ survives closing the terminal).
 three terminals:
 
 ```bash
-antioch services up                              # 1. stack + the teleop port tunnel
+antioch services up                                 # 1. stack + the teleop port tunnel
 antioch scenario run --scenario so101_live_teleop   # 2. the cloud half (streams live)
-uv run python so101-teleop/leader_bridge.py      # 3. the laptop half (auto-detects the arm)
+python so101-teleop/leader_bridge.py                # 3. the laptop half (auto-detects the arm)
 ```
 
 The scenario listens on TCP 56321 inside the sim container; the `ports` entry
 in `antioch.yaml` tunnels it to `localhost:56321`, and the bridge streams the
 leader's joints (degrees; gripper 0–100) into it at 30 Hz. Watch the sim arm
-follow your hand on the machine livestream (`antioch machine status` prints
-the URL). Bridge hotkeys: `r` resets and randomizes the cube, `q` ends the
-cloud session, Ctrl-C exits the bridge but leaves the session waiting for a
-reconnect until its `max_seconds` (default 600 s) elapses.
+follow your hand on the machine livestream. Bridge hotkeys: `r` resets and
+randomizes the cube, `q` ends the cloud session, Ctrl-C exits the bridge but
+leaves the session waiting for a reconnect until its `max_seconds` (default
+600 s, raise with `--set max_seconds=1800`) elapses. If the bridge can't
+connect after the machine changed, rerun `antioch services up` to re-open the
+tunnel.
 
 Arm auto-detection constraints — for it to work smoothly, **plug in only the
 leader arm**:
