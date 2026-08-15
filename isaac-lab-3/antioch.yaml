@@ -1,0 +1,33 @@
+# The id is the immutable identity used by Antioch machines.
+id: "isaac-lab-3-9bab921ab828489a98116742f4a7e336"
+name: "isaac-lab-3"
+scenario_paths: ["src/scenarios.py", "src/unitree.py"]
+
+services:
+  sim:
+    image: "antioch-engine/isaac-lab-3.0"
+    watch:
+      - action: sync
+        path: .
+        target: /workspace/project
+    # ports are reachable at localhost:<published> while the stack is up
+    #   - name: viewer
+    #     target: 8080
+    #     published: 8080
+    # declared ports stay open after `antioch services up` returns
+    # `antioch services down` closes them
+
+# Each suite is the ordered union of its select clauses.
+suites:
+  smoke:
+    description: "Fast engine smoke checks"
+    select:
+      - tags: ["smoke"]
+  sweep:
+    description: "Every case of the parameter sweep"
+    select:
+      - tags: ["sweep"]
+  unitree:
+    description: "Unitree Go2 choreography demo"
+    select:
+      - tags: ["unitree"]
