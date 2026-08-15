@@ -10,12 +10,15 @@ services:
       - action: sync
         path: .
         target: /workspace/project
-    # ports are reachable at localhost:<published> while the stack is up
-    #   - name: viewer
-    #     target: 8080
-    #     published: 8080
-    # declared ports stay open after `antioch services up` returns
+    # ports are reachable at localhost:<published> while the stack is up;
+    # declared ports stay open after `antioch services up` returns and
     # `antioch services down` closes them
+    ports:
+      # teleop/leader_bridge.py streams the physical SO-101 leader arm's
+      # joints through this tunnel into the so101_live_teleop scenario
+      - name: teleop
+        target: 56321
+        published: 56321
 
 # Each suite is the ordered union of its select clauses.
 suites:

@@ -11,8 +11,10 @@ simulation runs remotely — nothing here needs Isaac Sim installed locally.
 | `src/main.py` | A plain script (not a scenario): rains cubes onto a ground plane in a loop, mainly to exercise the livestream. |
 | `src/scenarios.py` | Two recorded scenarios: `falling_cube`, a fast smoke check that a dropped cube settles, and `cube_bounce`, a 6-case parameter sweep (3 drop heights × 2 restitutions) measuring rebound. |
 | `src/unitree.py` | `unitree_walk`: a Unitree Go2 walks on flat ground using Isaac Sim's pretrained flat-terrain policy, with a chase camera, logged telemetry, and checks on distance, height, uprightness, and drift. Two cases: `forward` and `turn`. |
-| `antioch.yaml` | The project manifest: the `sim` service (image `antioch-engine/isaac-sim-6.0.1`) and two suites, `smoke` and `sweep`. |
-| `pyproject.toml` | Python 3.12 project depending on `antioch-sim[isaac-sim]`, managed with uv. |
+| `src/so101_teleop.py` | `so101_live_teleop`: mirrors a physical SO-101 leader arm live in sim. Listens on a TCP port inside the sim container and applies streamed joint frames as position targets. |
+| `teleop/leader_bridge.py` | The laptop half of teleop: reads the physical SO-101 leader arm with lerobot and streams its joints through the port tunnel into the scenario. |
+| `antioch.yaml` | The project manifest: the `sim` service (image `antioch-engine/isaac-sim-6.0.1`), the teleop port tunnel, and two suites, `smoke` and `sweep`. |
+| `pyproject.toml` | Python 3.12 project depending on `antioch-sim[isaac-sim]` and `lerobot[feetech]`, managed with uv. |
 
 ## Setup
 
@@ -54,6 +56,41 @@ antioch suite run sweep --machines 4      # fan the sweep out across machines
 
 Add `--queue` to any scenario or suite run to execute it unattended (headless,
 survives closing the terminal).
+
+**Live SO-101 teleop** — drive the sim arm with the physical leader arm, in
+three terminals:
+
+```bash
+antioch services up                              # 1. stack + the teleop port tunnel
+antioch scenario run --scenario so101_live_teleop   # 2. the cloud half (streams live)
+uv run python teleop/leader_bridge.py            # 3. the laptop half (auto-detects the arm)
+```
+
+The scenario listens on TCP 56321 inside the sim container; the `ports` entry
+in `antioch.yaml` tunnels it to `localhost:56321`, and the bridge streams the
+leader's joints (degrees; gripper 0–100) into it at 30 Hz. Watch the sim arm
+follow your hand on the machine livestream (`antioch machine status` prints
+the URL). Bridge hotkeys: `r` resets and randomizes the cube, `q` ends the
+cloud session, Ctrl-C exits the bridge but leaves the session waiting for a
+reconnect until its `max_seconds` (default 600 s) elapses.
+
+Arm auto-detection constraints — for it to work smoothly, **plug in only the
+leader arm**:
+
+- The bridge picks the serial port by globbing `/dev/tty.usbmodem*` and only
+  proceeds when exactly one device matches. A second USB-serial device — the
+  follower arm, or any dev board that enumerates the same way — makes it
+  refuse rather than guess; pass `--port /dev/tty.usbmodemXXXX` to
+  disambiguate (the name embeds the board's USB serial, so it's stable across
+  replugs).
+- The port alone doesn't say "leader": if you point it at the follower by
+  mistake, the motors' stored calibration won't match the leader's
+  calibration file and the bridge exits with a "not calibrated" error —
+  correct outcome, misleading message.
+- The calibration id defaults to `my_leader_arm` (the file under
+  `~/.cache/huggingface/lerobot/calibration/teleoperators/so_leader/`); use
+  `--id` if your arm was calibrated under a different name, or `--calibrate`
+  to run lerobot's interactive calibration flow.
 
 **Reading results back:**
 
