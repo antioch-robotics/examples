@@ -1,4 +1,4 @@
-# examples
+# Antioch Examples
 
 Example projects for [Antioch](https://antioch.com), the simulation platform
 for physical AI. Each directory is a self-contained Antioch project — an
