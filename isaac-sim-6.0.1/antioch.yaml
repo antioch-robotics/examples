@@ -1,0 +1,29 @@
+# The id is the immutable identity used by Antioch machines.
+id: "nebius-isaac-sim-6-0-1-example-316a5e15086849d78fc73edbcb79e4b2"
+name: "nebius-isaac-sim-6.0.1-examples"
+scenario_paths: ["src/"]
+
+services:
+  sim:
+    image: "antioch-engine/isaac-sim-6.0.1"
+    watch:
+      - action: sync
+        path: .
+        target: /workspace/project
+    # ports are reachable at localhost:<published> while the stack is up
+    #   - name: viewer
+    #     target: 8080
+    #     published: 8080
+    # declared ports stay open after `antioch services up` returns
+    # `antioch services down` closes them
+
+# Each suite is the ordered union of its select clauses.
+suites:
+  smoke:
+    description: "Fast engine smoke checks"
+    select:
+      - tags: ["smoke"]
+  sweep:
+    description: "Every case of the parameter sweep"
+    select:
+      - tags: ["sweep"]
