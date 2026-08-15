@@ -7,8 +7,8 @@ nothing here needs a simulator installed locally.
 
 | Example | What it shows |
 |---|---|
-| [`isaac-sim-6.0.1/`](isaac-sim-6.0.1/) | Isaac Sim 6.0.1: a livestreamed script, recorded scenarios (a falling-cube smoke check, a cube-bounce parameter sweep, and a Unitree Go2 walking on a pretrained policy), and the `smoke`/`sweep` suites. |
-| `isaac-lab-3/` | Isaac Lab 3.0 (coming soon). |
+| [`isaac-sim-6.0.1/`](isaac-sim-6.0.1/) | Isaac Sim 6.0.1, one folder per example: `sandbox/` (a naked GUI session), `cubes/` (a livestreamed script, a falling-cube smoke check, and a cube-bounce parameter sweep), `unitree/` (a Go2 walking on a pretrained policy), and `so101-teleop/` (a physical SO-101 leader arm mirrored live in sim). Suites: `smoke`, `sweep`, `cubes`, `unitree`. |
+| `isaac-lab-3/` | Isaac Lab 3.0, one folder per example: `sandbox/` (a naked GUI session), `cartpole/` (a livestreamed script, a smoke check, and a parameter sweep), and `unitree/` (a Go2 joint-space choreography). Suites: `smoke`, `sweep`, `cartpole`, `unitree`. |
 
 ## Getting started
 
@@ -18,7 +18,7 @@ Each example manages its own environment with [uv](https://docs.astral.sh/uv/):
 cd isaac-sim-6.0.1
 uv sync
 uv run antioch auth login   # first time only
-uv run antioch run src/main.py
+uv run antioch run cubes/demo.py
 ```
 
 See each example's README for what it contains and the full set of ways to

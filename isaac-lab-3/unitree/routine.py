@@ -9,8 +9,8 @@ the raw articulation path: spawn, actuator config, position targets, step.
 An orbiting camera keeps the livestream interesting while the robot stays
 near the origin.
 
-    antioch run src/unitree.py                          livestream two loops
-    antioch run src/unitree.py -- --seconds 90          keep it running longer
+    antioch run unitree/routine.py                          livestream two loops
+    antioch run unitree/routine.py -- --seconds 90          keep it running longer
     antioch scenario run --scenario unitree_go2_routine one recorded run
     antioch suite run unitree                           the unitree suite
 """

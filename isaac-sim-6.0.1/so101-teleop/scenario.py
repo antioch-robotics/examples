@@ -3,7 +3,7 @@ so101_live_teleop — mirror a physical SO-101 leader arm in sim, live.
 
 Transport: this scenario listens on a TCP port inside the sim container
 (services run with host networking), and `antioch.yaml` declares that port
-as an authenticated tunnel. The local bridge (teleop/leader_bridge.py)
+as an authenticated tunnel. The local bridge (so101-teleop/leader_bridge.py)
 connects to localhost:<port> and streams newline-delimited JSON frames in
 the robot's native units (degrees; gripper 0..100). The scenario converts
 to sim radians against the articulation's actual DOF limits and applies
@@ -13,7 +13,7 @@ Run order (three terminals):
 
     1. uv run antioch services up                       # stack + port tunnel
     2. uv run antioch scenario run --scenario so101_live_teleop
-    3. uv run python teleop/leader_bridge.py            # auto-detects the arm
+    3. uv run python so101-teleop/leader_bridge.py            # auto-detects the arm
 
 Watch the machine livestream (`antioch machine status` prints the URL).
 The session ends when the bridge sends a stop command (press q) or after

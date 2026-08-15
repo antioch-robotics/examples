@@ -1,7 +1,9 @@
 # The id is the immutable identity used by Antioch machines.
 id: "isaac-lab-3-9bab921ab828489a98116742f4a7e336"
 name: "isaac-lab-3"
-scenario_paths: ["src/scenarios.py", "src/unitree.py"]
+
+# One folder per example: cartpole basics and the Unitree Go2 choreography.
+scenario_paths: ["cartpole", "unitree"]
 
 services:
   sim:
@@ -20,14 +22,18 @@ services:
 # Each suite is the ordered union of its select clauses.
 suites:
   smoke:
-    description: "Fast engine smoke checks"
+    description: "Fast engine smoke check: the cartpole stays finite"
     select:
       - tags: ["smoke"]
   sweep:
-    description: "Every case of the parameter sweep"
+    description: "Every case of the cartpole_drive parameter sweep"
     select:
       - tags: ["sweep"]
+  cartpole:
+    description: "All cartpole scenarios"
+    select:
+      - paths: ["cartpole"]
   unitree:
     description: "Unitree Go2 choreography demo"
     select:
-      - tags: ["unitree"]
+      - paths: ["unitree"]

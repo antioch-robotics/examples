@@ -1,0 +1,10 @@
+[project]
+name = "isaac-lab-3-examples"
+version = "0.1.0"
+requires-python = ">=3.12, <3.13"
+dependencies = [
+    "antioch-sim[isaac-lab]>=0.3.42",
+]
+
+[tool.uv]
+compile-bytecode = true

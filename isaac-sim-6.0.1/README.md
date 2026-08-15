@@ -6,14 +6,15 @@ simulation runs remotely — nothing here needs Isaac Sim installed locally.
 
 ## What's here
 
-| File | What it is |
+One folder per example:
+
+| Folder | What it contains |
 |---|---|
-| `src/main.py` | A plain script (not a scenario): rains cubes onto a ground plane in a loop, mainly to exercise the livestream. |
-| `src/scenarios.py` | Two recorded scenarios: `falling_cube`, a fast smoke check that a dropped cube settles, and `cube_bounce`, a 6-case parameter sweep (3 drop heights × 2 restitutions) measuring rebound. |
-| `src/unitree.py` | `unitree_walk`: a Unitree Go2 walks on flat ground using Isaac Sim's pretrained flat-terrain policy, with a chase camera, logged telemetry, and checks on distance, height, uprightness, and drift. Two cases: `forward` and `turn`. |
-| `src/so101_teleop.py` | `so101_live_teleop`: mirrors a physical SO-101 leader arm live in sim. Listens on a TCP port inside the sim container and applies streamed joint frames as position targets. |
-| `teleop/leader_bridge.py` | The laptop half of teleop: reads the physical SO-101 leader arm with lerobot and streams its joints through the port tunnel into the scenario. |
-| `antioch.yaml` | The project manifest: the `sim` service (image `antioch-engine/isaac-sim-6.0.1`), the teleop port tunnel, and two suites, `smoke` and `sweep`. |
+| `sandbox/` | `demo.py` boots a naked Isaac Sim session and idles the event loop, so the streamed GUI is fully yours: build a scene, drop in assets, press Play. Nothing is scripted and nothing is recorded. |
+| `cubes/` | Cube physics. `demo.py` is a plain script (not a scenario) that rains cubes onto a ground plane, mainly to exercise the livestream. `scenarios.py` holds `falling_cube`, a fast smoke check that a dropped cube settles, and `cube_bounce`, a 6-case parameter sweep (3 drop heights × 2 restitutions) measuring rebound. |
+| `unitree/` | `walk.py` holds `unitree_walk`: a Unitree Go2 walks on flat ground using Isaac Sim's pretrained flat-terrain policy, with a chase camera, logged telemetry, and checks on distance, height, uprightness, and drift. Two cases: `forward` and `turn`. |
+| `so101-teleop/` | Live teleop of a physical SO-101 arm. `scenario.py` holds `so101_live_teleop`, which listens on a TCP port inside the sim container and mirrors streamed joint frames as position targets; `leader_bridge.py` is the laptop half, reading the leader arm with lerobot and streaming its joints through the port tunnel. |
+| `antioch.yaml` | The project manifest: the `sim` service (image `antioch-engine/isaac-sim-6.0.1`), the teleop port tunnel, and the suites below. |
 | `pyproject.toml` | Python 3.12 project depending on `antioch-sim[isaac-sim]` and `lerobot[feetech]`, managed with uv. |
 
 ## Setup
@@ -32,9 +33,11 @@ the commands below with `uv run`. You'll need to be signed in to Antioch
 recorded. Streams a live viewport by default:
 
 ```bash
-antioch run src/main.py                   # 30s run with livestream
-antioch run --no-stream src/main.py       # headless
-antioch run src/main.py -- --seconds 5    # quick iteration
+antioch run cubes/demo.py                   # 30s run with livestream
+antioch run --no-stream cubes/demo.py       # headless
+antioch run cubes/demo.py -- --seconds 5    # quick iteration
+antioch run sandbox/demo.py                 # a naked GUI session (15 min)
+antioch run --timeout 86400 sandbox/demo.py # ... that lasts all day
 ```
 
 **Scenarios** — each run is recorded with pass/fail checks, results,
@@ -52,7 +55,12 @@ antioch scenario run --scenario unitree_walk
 antioch suite run smoke                   # fast checks (falling_cube + unitree_walk's forward case)
 antioch suite run sweep                   # all 6 cube_bounce cases
 antioch suite run sweep --machines 4      # fan the sweep out across machines
+antioch suite run cubes                   # everything in cubes/
+antioch suite run unitree                 # both unitree_walk cases
 ```
+
+The teleop example has no suite: it needs a human moving the physical leader
+arm, so it is dispatched directly (below).
 
 Add `--queue` to any scenario or suite run to execute it unattended (headless,
 survives closing the terminal).
@@ -63,7 +71,7 @@ three terminals:
 ```bash
 antioch services up                              # 1. stack + the teleop port tunnel
 antioch scenario run --scenario so101_live_teleop   # 2. the cloud half (streams live)
-uv run python teleop/leader_bridge.py            # 3. the laptop half (auto-detects the arm)
+uv run python so101-teleop/leader_bridge.py      # 3. the laptop half (auto-detects the arm)
 ```
 
 The scenario listens on TCP 56321 inside the sim container; the `ports` entry

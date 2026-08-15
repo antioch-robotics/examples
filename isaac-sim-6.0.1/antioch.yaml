@@ -1,7 +1,10 @@
 # The id is the immutable identity used by Antioch machines.
 id: "nebius-isaac-sim-6-0-1-example-316a5e15086849d78fc73edbcb79e4b2"
 name: "nebius-isaac-sim-6.0.1-examples"
-scenario_paths: ["src/"]
+
+# One folder per example: cube physics, Unitree Go2 locomotion, and the
+# SO-101 leader-arm teleop bridge.
+scenario_paths: ["cubes", "unitree", "so101-teleop"]
 
 services:
   sim:
@@ -14,8 +17,8 @@ services:
     # declared ports stay open after `antioch services up` returns and
     # `antioch services down` closes them
     ports:
-      # teleop/leader_bridge.py streams the physical SO-101 leader arm's
-      # joints through this tunnel into the so101_live_teleop scenario
+      # so101-teleop/leader_bridge.py streams the physical SO-101 leader
+      # arm's joints through this tunnel into the so101_live_teleop scenario
       - name: teleop
         target: 56321
         published: 56321
@@ -23,10 +26,20 @@ services:
 # Each suite is the ordered union of its select clauses.
 suites:
   smoke:
-    description: "Fast engine smoke checks"
+    description: "Fast engine smoke checks: a settling cube and one Go2 walk"
     select:
       - tags: ["smoke"]
   sweep:
-    description: "Every case of the parameter sweep"
+    description: "Every case of the cube_bounce parameter sweep"
     select:
       - tags: ["sweep"]
+  cubes:
+    description: "All cube physics scenarios"
+    select:
+      - paths: ["cubes"]
+  unitree:
+    description: "All Unitree Go2 locomotion cases"
+    select:
+      - paths: ["unitree"]
+  # so101-teleop has no suite: it needs a human moving the physical leader
+  # arm, so it is dispatched directly with `antioch scenario run`.

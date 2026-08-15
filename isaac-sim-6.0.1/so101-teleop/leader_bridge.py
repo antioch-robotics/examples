@@ -8,7 +8,7 @@ into that tunnel. Run order:
 
     1. uv run antioch services up
     2. uv run antioch scenario run --scenario so101_live_teleop
-    3. uv run python teleop/leader_bridge.py            # this script
+    3. uv run python so101-teleop/leader_bridge.py            # this script
 
 The serial port is auto-detected when exactly one /dev/tty.usbmodem* is
 present; pass --port to disambiguate. Frames are the ROBOT convention

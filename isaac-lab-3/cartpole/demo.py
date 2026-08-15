@@ -1,10 +1,10 @@
 """
 Drive a cartpole under a sine effort, so a livestream is visibly live.
 
-    antioch run src/main.py                   run with the default livestream
-    antioch run --no-stream src/main.py       run headlessly
-    antioch run src/main.py -- --seconds 5    quick enough to iterate on
-    antioch run src/main.py -- --seconds 600  long enough to walk away from
+    antioch run cartpole/demo.py                   run with the default livestream
+    antioch run --no-stream cartpole/demo.py       run headlessly
+    antioch run cartpole/demo.py -- --seconds 5    quick enough to iterate on
+    antioch run cartpole/demo.py -- --seconds 600  long enough to walk away from
 
 Every knob is an argument because the point of this file is to be dispatched
 many ways, often at once: concurrent runs of different lengths are what
