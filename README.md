@@ -7,8 +7,8 @@ nothing here needs a simulator installed locally.
 
 | Example | What it shows |
 |---|---|
-| [`isaac-sim-6.0.1/`](isaac-sim-6.0.1/) | Isaac Sim 6.0.1, one folder per example: `sandbox/` (a naked GUI session), `cubes/` (a livestreamed script, a falling-cube smoke check, and a cube-bounce parameter sweep), `unitree/` (a Go2 walking on a pretrained policy), and `so101-teleop/` (a physical SO-101 leader arm mirrored live in sim). Suites: `smoke`, `sweep`, `cubes`, `unitree`. |
-| [`isaac-lab-3/`](isaac-lab-3/) | Isaac Lab 3.0, one folder per example: `sandbox/` (a naked GUI session), `cartpole/` (a livestreamed script, a smoke check, and a parameter sweep), and `unitree/` (a Go2 joint-space choreography). Suites: `smoke`, `sweep`, `cartpole`, `unitree`. |
+| [Isaac Sim 6.0.1 Examples](isaac-sim-6.0.1/) (`isaac-sim-6.0.1/`) | One folder per example: `sandbox/` (a naked GUI session), `cubes/` (a livestreamed script, a falling-cube smoke check, and a cube-bounce parameter sweep), `unitree/` (a Go2 walking on a pretrained policy), and `so101-teleop/` (a physical SO-101 leader arm mirrored live in sim). Suites: `smoke`, `sweep`, `cubes`, `unitree`. |
+| [Isaac Lab 3.0 Examples](isaac-lab-3/) (`isaac-lab-3/`) | One folder per example: `sandbox/` (a naked GUI session), `cartpole/` (a livestreamed script, a smoke check, and a parameter sweep), and `unitree/` (a Go2 joint-space choreography). Suites: `smoke`, `sweep`, `cartpole`, `unitree`. |
 
 ## Getting started
 

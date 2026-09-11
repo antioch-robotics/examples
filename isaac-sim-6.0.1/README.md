@@ -1,4 +1,4 @@
-# Isaac Sim 6.0.1 examples
+# Isaac Sim 6.0.1 Examples
 
 A small Antioch project showing Isaac Sim 6.0.1 code running on a remote GPU
 machine: plain scripts, recorded scenarios, and suites. All simulation runs
