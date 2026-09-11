@@ -47,7 +47,7 @@ SIM_DOF_ALIASES = {
 
 @antioch.scenario(
     tags=["so101", "teleop", "isaacsim"],
-    sim=antioch.BootProfile(physics_dt=1.0 / 60.0, render_dt=1.0 / 60.0),
+    config=antioch.SimulationConfig(physics_dt=1.0 / 60.0, render_dt=1.0 / 60.0),
 )
 def so101_live_teleop(
     run: antioch.ScenarioRun,

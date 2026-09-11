@@ -20,8 +20,9 @@ services:
       # so101-teleop/leader_bridge.py streams the physical SO-101 leader
       # arm's joints through this tunnel into the so101_live_teleop scenario
       - name: teleop
-        target: 56321
-        published: 56321
+        port: 56321
+        protocol: tcp
+        direction: client-to-service
 
 # Each suite is the ordered union of its select clauses.
 suites:

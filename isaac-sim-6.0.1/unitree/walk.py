@@ -24,7 +24,7 @@ RENDER_DT = 1.0 / 50.0
 
 @antioch.scenario(
     tags=["unitree"],
-    sim=antioch.BootProfile(physics_dt=PHYSICS_DT, render_dt=RENDER_DT, physics_engine="newton"),
+    config=antioch.SimulationConfig(physics_dt=PHYSICS_DT, render_dt=RENDER_DT, physics_engine="newton"),
     cases=[
         antioch.case(id="forward", tags=["smoke"]),
         antioch.case({"vx": 0.6, "wz": 0.5}, id="turn"),
