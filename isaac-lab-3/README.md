@@ -1,4 +1,4 @@
-# Isaac Lab 3.0 examples
+# Isaac Lab 3.0 Examples
 
 A small Antioch project showing Isaac Lab 3.0 code running on a remote GPU
 machine: plain scripts, recorded scenarios, and suites. All simulation runs

@@ -1,6 +1,6 @@
 # The id is the immutable identity used by Antioch machines.
 id: "isaac-lab-3-9bab921ab828489a98116742f4a7e336"
-name: "isaac-lab-3"
+name: "Isaac Lab 3.0 Examples"
 
 # One folder per example: cartpole basics and the Unitree Go2 choreography.
 scenario_paths: ["cartpole", "unitree"]

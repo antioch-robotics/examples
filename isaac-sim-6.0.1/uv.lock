@@ -1187,7 +1187,7 @@ wheels = [
 ]
 
 [[package]]
-name = "nebius-isaac-sim-6-0-1-examples"
+name = "isaac-sim-6-0-1-examples"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
